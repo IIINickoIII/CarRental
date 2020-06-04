@@ -1,0 +1,140 @@
+﻿@model CarRental.WEB.ViewModels.AgreementViewModel
+@using CarRental.WEB.Models
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var daysForRent = (Model.rentViewModel.lastDayRent.Date - Model.rentViewModel.firstDayRent.Date).Days;
+}
+<h2>Details</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Your account: @User.Identity.Name</p>
+    if (User.IsInRole(RoleName.Banned))
+    {
+        <p><span class="badge badge-danger">Sorry, but you was banned by our manager : (</span></p>
+        <p><span class="badge badge-warning">You can't rent a car any more!</span></p>
+    }
+}
+<p>Date of agreement: @Model.DateOfAgreement</p>
+<p>@Model.Name @Model.Surname Passport: @Model.Personald</p>
+<img src="@Model.CarDto.PictureLink" alt="Car" class="img-thumbnail-car" />
+@if (Model.WithChildSeat)
+{
+    <a>With childseat: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With childseat: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.WithGPS)
+{
+    <a>With GPS: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With GPS: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.WithDriver)
+{
+    <a>With driver: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With driver: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.IsPayed)
+{
+    <a>Payed: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>Payed: </a><span class="badge badge-warning">NO</span>
+}
+<a>Total price: </a><span class="badge badge-primary">@Model.TotalPrice $</span>
+<p>@Model.CarDto.Name @Model.CarDto.ProductionYear Plates: <span class="badge badge-secondary">@Model.CarDto.LicensePlate</span></p>
+<div class="grid-container-for-car-search-info">
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>@daysForRent days</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Date</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Time</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Location</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Completed</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Pick-up</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.PickUpLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        @if (Model.IsPickUped)
+        {
+            <a><span class="badge badge-success">YES</span></a>
+        }
+        else
+        {
+            <a><span class="badge badge-warning">NO</span></a>
+        }
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Return</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.ReturnLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        @if (Model.IsReturned)
+        {
+            <a><span class="badge badge-success">YES</span></a>
+        }
+        else
+        {
+            <a><span class="badge badge-warning">NO</span></a>
+        }
+    </div>
+</div>
+<div class="form-group">
+    <a>Status: </a>
+    @if (Model.IsConfirmd)
+    {
+        <a><span class="badge badge-success">Confirmed by manager</span></a>
+    }
+    else
+    {
+        if (Model.IsDeleted)
+        {
+            <a><span class="badge badge-warning">Was denied by manager</span></a>
+        }
+        else
+        {
+            <a><span class="badge badge-warning">Waiting</span></a>
+        }
+    }
+</div>
+<div class="form-group">
+    @Html.LabelFor(a => a.ManagerComment, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+    @Html.TextAreaFor(a => a.ManagerComment, htmlAttributes: new { @class = "form-control form-control-sm description-under-add-car", @rows = 5, @disabled = "" })
+</div>

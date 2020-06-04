@@ -1,0 +1,141 @@
+﻿@model IEnumerable<CarRental.WEB.ViewModels.AgreementViewModel>
+@using CarRental.WEB.Models
+@using CarRental.BLL.Dto
+@{
+    ViewBag.Title = "AgreementsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Agreements</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Your account: @User.Identity.Name</p>
+    if (User.IsInRole(RoleName.Banned))
+    {
+        <p><span class="badge badge-danger">Sorry, but you was banned by our manager : (</span></p>
+        <p><span class="badge badge-warning">You can't rent a car any more!</span></p>
+    }
+}
+<table id="agreements" class="table table-hover">
+    <thead>
+        <tr scope="row">
+            <th>Picture</th>
+            <th>Car</th>
+            <th>User</th>
+            <th>Passport</th>
+            <th>Pick-up</th>
+            <th>Return</th>
+            <th>Insurance</th>
+            <th>Price</th>
+            <th>Driver</th>
+            <th>Confirmed</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var agreement in Model)
+        {
+            <tr scope="row">
+                <td><img src="@agreement.CarDto.PictureLink" class="img-thumbnail-car" alt="Car" /></td>
+                <td>@agreement.CarDto.Name</td>
+                <td>@agreement.Name @agreement.Surname</td>
+                <td>@agreement.Personald</td>
+                <td>
+                    @if (agreement.IsPickUped)
+                    {
+                        <span class="badge badge-success">Complete</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Wait</span>
+                    }
+                    @agreement.rentViewModel.firstDayRent.ToShortDateString()
+                </td>
+                <td>
+                    @if (agreement.IsReturned)
+                    {
+                        <span class="badge badge-success">Complete</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Wait</span>
+                    }
+                    @agreement.rentViewModel.lastDayRent.ToShortDateString()
+                </td>
+                <td>
+                    @switch (agreement.InsuranceType)
+                    {
+                        case InsuranceType.None:
+                            {
+                                <span class="badge badge-warning">None</span>
+                                break;
+                            }
+                        case InsuranceType.Standard:
+                            {
+                                <span class="badge badge-danger">Standard</span>
+                                break;
+                            }
+                        case InsuranceType.Lux:
+                            {
+                                <span class="badge badge-success">Lux</span>
+                                break;
+                            }
+
+                    }
+                </td>
+                <td><span class="badge badge-primary">@agreement.TotalPrice $</span></td>
+                @if (agreement.WithDriver)
+                {
+                    <td><span class="badge badge-success">YES</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-warning">NO</span></td>
+                }
+                @if (agreement.IsDeleted)
+                {
+                    <td><span class="badge badge-warning">DELETED</span></td>
+                }
+                else
+                {
+                    if (agreement.IsConfirmd)
+                    {
+                        <td><span class="badge badge-success">YES</span></td>
+                    }
+                    else
+                    {
+                        <td><span class="badge badge-warning">NO</span></td>
+                    }
+                }
+                <td>
+                    @Html.ActionLink("Details", "Details", "Home", routeValues: new { @agreementDtoId = agreement.Id }, htmlAttributes: null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#agreements').DataTable({
+                columns: [
+                    {
+                        orderable: false
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {
+                        orderable: false
+                    }
+                ]
+            });
+        });
+    </script>
+}

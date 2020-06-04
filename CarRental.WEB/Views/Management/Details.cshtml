@@ -1,0 +1,141 @@
+﻿@model CarRental.WEB.ViewModels.AgreementViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var daysForRent = (Model.rentViewModel.lastDayRent.Date - Model.rentViewModel.firstDayRent.Date).Days;
+}
+<h2>Details</h2>
+<p>Your account: @User.Identity.Name</p>
+@Html.ActionLink("Back", "AllAgreements","Management")
+<p>Date of agreement: @Model.DateOfAgreement</p>
+<p>@Model.Name @Model.Surname Passport: @Model.Personald</p>
+<img src="@Model.CarDto.PictureLink" alt="Car" class="img-thumbnail-car" />
+@if (Model.WithChildSeat)
+{
+    <a>With childseat: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With childseat: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.WithGPS)
+{
+    <a>With GPS: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With GPS: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.WithDriver)
+{
+    <a>With driver: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>With driver: </a><span class="badge badge-warning">NO</span>
+}
+@if (Model.IsPayed)
+{
+    <a>Payed: </a><span class="badge badge-success">YES</span>
+}
+else
+{
+    <a>Payed: </a><span class="badge badge-warning">NO</span>
+}
+<a>Total price: </a><span class="badge badge-primary">@Model.TotalPrice $</span>
+<p>@Model.CarDto.Name @Model.CarDto.ProductionYear Plates: <span class="badge badge-secondary">@Model.CarDto.LicensePlate</span></p>
+<div class="grid-container-for-car-search-info">
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>@daysForRent days</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Date</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Time</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Location</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Completed</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Pick-up</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.PickUpLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        @if (Model.IsPickUped)
+        {
+            <a></a><span class="badge badge-success">YES</span>
+        }
+        else
+        {
+            <a></a><span class="badge badge-warning">NO</span>
+        }
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Return</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.ReturnLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        @if (Model.IsReturned)
+        {
+            <a></a><span class="badge badge-success">YES</span>
+        }
+        else
+        {
+            <a></a><span class="badge badge-warning">NO</span>
+        }
+    </div>
+</div>
+@using (Html.BeginForm("Save","Management", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(a => a.IsConfirmd, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.IsConfirmd)
+        @Html.ValidationMessageFor(a => a.IsConfirmd)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.IsDeleted, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.IsDeleted)
+        @Html.ValidationMessageFor(a => a.IsDeleted)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.IsPickUped, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.IsPickUped)
+        @Html.ValidationMessageFor(a => a.IsPickUped)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.IsReturned, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.IsReturned)
+        @Html.ValidationMessageFor(a => a.IsReturned)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.ManagerComment, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.TextAreaFor(a => a.ManagerComment, htmlAttributes: new { @class = "form-control form-control-sm description-under-add-car", @rows = 5, @placeholder = "Add your comment." })
+        @Html.ValidationMessageFor(a => a.ManagerComment)
+    </div>
+    @Html.HiddenFor(a => a.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}

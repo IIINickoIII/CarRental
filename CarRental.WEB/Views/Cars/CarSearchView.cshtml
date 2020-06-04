@@ -1,0 +1,217 @@
+﻿@model CarRental.WEB.ViewModels.CarSearchViewModel
+@{
+    ViewBag.Title = "Cars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var sourceAscDesc = new List<SelectListItem>() { };
+    sourceAscDesc.Add(new SelectListItem { Text = "Ascending", Value = true.ToString() });
+    sourceAscDesc.Add(new SelectListItem { Text = "Descending", Value = false.ToString() });
+
+    var sourceYesNo = new List<SelectListItem>() { };
+    sourceYesNo.Add(new SelectListItem { Text = "Yes", Value = true.ToString() });
+    sourceYesNo.Add(new SelectListItem { Text = "No", Value = false.ToString() });
+
+    var daysForRent = (Model.rentViewModel.lastDayRent.Date - Model.rentViewModel.firstDayRent.Date).Days + 1;
+}
+<p></p>
+<h2>Cars</h2>
+<div class="grid-container-for-car-search-info">
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>@daysForRent days</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Date</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Time</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Location</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Pick-up</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.PickUpLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Return</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.ReturnLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+</div>
+@using (Html.BeginForm("SearchAvailableCarsByOptions", "Cars", FormMethod.Get))
+{
+    <div class="grid-container-for-car-search">
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.NameAsc)
+                @Html.DropDownListFor(m => m.NameAsc, new SelectList(sourceAscDesc, "Value", "Text"), "select", htmlAttributes: null)
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProductionYearAsc)
+                @Html.DropDownListFor(m => m.ProductionYearAsc,
+                    new SelectList(sourceAscDesc, "Value", "Text"), "select", htmlAttributes: null)
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.WithAirConditioning)
+                @Html.DropDownListFor(m => m.WithAirConditioning,
+                    new SelectList(sourceYesNo, "Value", "Text"), "select", htmlAttributes: null)
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.PriceAsc)
+                @Html.DropDownListFor(m => m.PriceAsc,
+                    new SelectList(sourceAscDesc, "Value", "Text"), "select", htmlAttributes: null)
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MinPrice)
+                @Html.TextBoxFor(m => m.MinPrice,
+                    htmlAttributes: new { @type = "number", @min = 10, @step = 1 })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MaxPrice)
+                @Html.TextBoxFor(m => m.MaxPrice,
+                    htmlAttributes: new { @type = "number", @min = 10, @step = 1 })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.ManufacturerDtoId)
+                @Html.DropDownListFor(c => c.ManufacturerDtoId,
+                    new SelectList(Model.ManufacturerDtos, "Id", "Name"),
+                    "Select manufacturer",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.FuelTypeDtoId)
+                @Html.DropDownListFor(c => c.FuelTypeDtoId,
+                    new SelectList(Model.FuelTypeDtos, "Id", "Name"), "Select fuel type",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.GearboxTypeDtoId)
+                @Html.DropDownListFor(c => c.GearboxTypeDtoId,
+                    new SelectList(Model.GearboxTypeDtos, "Id", "Name"), "Select gearbox type",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.TransmissionTypeDtoId)
+                @Html.DropDownListFor(c => c.TransmissionTypeDtoId,
+                    new SelectList(Model.TransmissionTypeDtos, "Id", "Name"), "Select transmission type",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.CarClassDtoId)
+                @Html.DropDownListFor(c => c.CarClassDtoId,
+                    new SelectList(Model.CarClassDtos, "Id", "Name"), "Select car class",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search">
+            <div class="form-group">
+                @Html.LabelFor(c => c.BodyTypeDtoId)
+                @Html.DropDownListFor(c => c.BodyTypeDtoId,
+                    new SelectList(Model.BodyTypeDtos, "Id", "Name"), "Select body type",
+                    htmlAttributes: new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <div class="grid-item-for-car-search item-button-search-car">
+            @Html.HiddenFor(m => Model.rentViewModel.firstDayRent)
+            @Html.HiddenFor(m => Model.rentViewModel.PickUpLocationId)
+            @Html.HiddenFor(m => Model.rentViewModel.lastDayRent)
+            @Html.HiddenFor(m => Model.rentViewModel.ReturnLocationId)
+            <button type="submit" class="btn btn-primary btn-add-car">Search</button>
+            <button type="submit" class="btn btn-outline-primary btn-add-car" onclick="clearForm()">Reset filters</button>
+        </div>
+    </div>
+}
+<div class="grid-container">
+    @if (Model.CarViewModels.ToList().Count == 0 || Model.CarViewModels == null)
+    {
+        <h3>No available Cars :(</h3>
+    }
+    else
+    {
+        foreach (var car in Model.CarViewModels)
+        {
+            <div class="grid-item">
+                <img src="@car.PictureLink" class="img-add-car" alt="New Car" />
+                <p>@Html.ActionLink($"{car.ManufacturerDto.Name} {car.Name}", "Details", "Cars", htmlAttributes: null, routeValues: new { carDtoId = car.Id })</p>
+                <p><span class="badge badge-primary">Price</span> @car.PricePerDay $/day</p>
+                <p><span class="badge badge-primary">Year</span> @car.ProductionYear</p>
+                @if (@car.WithAirConditioning)
+                {
+                    <p><span class="badge badge-primary">Air conditioning</span> <span class="badge badge-success">Yes</span></p>
+                }
+                else
+                {
+                    <p><span class="badge badge-primary">Air conditioning</span> <span class="badge badge-warning">No</span></p>
+                }
+                <p>@car.ShortDescription</p>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Rent", "RentCar", "Rents", 
+                        htmlAttributes: new { @class = "btn btn-primary" }, 
+                        routeValues: new {
+                            @carDtoId = car.Id,
+                            @firstDayRent = Model.rentViewModel.firstDayRent,
+                            @lastDayRent = Model.rentViewModel.lastDayRent,
+                            @pickUpLocationId = Model.rentViewModel.PickUpLocationId,
+                            @ReturnLocationId = Model.rentViewModel.ReturnLocationId
+                        });
+                }
+            </div>
+        }
+    }
+</div>
+@section scripts
+{
+    <script>
+        function clearForm() {
+            var selects = document.getElementsByTagName("select");
+            for (var i = 0; i < selects.length; i++) {
+                selects[i].options.selectedIndex = 0;
+            }
+            var inputs = document.getElementsByTagName("input");
+            inputs[0].value = "";
+            inputs[1].value = "";
+        }
+    </script>
+}

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CarRental.WEB.ViewModels.ManufacturerViewModel>
+@{
+    ViewBag.Title = "Manufacturers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Manufacturers</h2>
+@Html.ActionLink("main", "Index", "Home")
+<table id="manufacturers" class="table table-hover" width="100%">
+    <thead>
+        <tr scope="row">
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var manufacturer in Model)
+        {
+            string imageName = manufacturer.Id + ".png";
+            <tr scope="row">
+                <td><img src="@manufacturer.PictureLink" alt="no image" class="img-thumbnail" /></td>
+                <td>@Html.ActionLink(manufacturer.Name, "Details", "Manufacturers", htmlAttributes: null, routeValues: new { manufacturerDtoId = manufacturer.Id })</td>
+                <td>@manufacturer.Country</td>
+                <td>@manufacturer.Description</td>
+            </tr>
+        }*@
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $('#manufacturers').DataTable({
+                ajax: {
+                    url: "api/manufacturers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        orderable: false,
+                        data: "id",
+                        render: function (data, type, manufacturerDto) {
+                            return "<img src='" + manufacturerDto.pictureLink + "' alt='no image' class='img-thumbnail'/>"
+                        }
+                    },
+                    {
+                        data: "name",
+                        render: function (data, type, manufacturerDto) {
+                            return "<a href='/manufacturers/Details?manufacturerDtoId=" + manufacturerDto.id + "'>" + manufacturerDto.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "country"
+                    },
+                    {
+                        orderable: false,
+                        data: "description"
+                    }
+                ]
+            });
+        });
+    </script>
+}

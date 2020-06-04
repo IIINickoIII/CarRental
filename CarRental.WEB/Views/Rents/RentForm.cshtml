@@ -1,0 +1,153 @@
+﻿@model CarRental.WEB.ViewModels.AgreementViewModel
+@{
+    ViewBag.Title = "RentForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string carName = $"{Model.CarDto.ManufacturerDto.Name} {Model.CarDto.Name}";
+    var daysForRent = (Model.rentViewModel.lastDayRent.Date - Model.rentViewModel.firstDayRent.Date).Days + 1;
+
+    var sourceInsuranceType = new List<SelectListItem>() { };
+    sourceInsuranceType.Add(new SelectListItem { Text = "None", Value = "0" });
+    sourceInsuranceType.Add(new SelectListItem { Text = "Standard", Value = "1" });
+    sourceInsuranceType.Add(new SelectListItem { Text = "Lux", Value = "2" });
+}
+<h2>Rent Order</h2>
+<div class="grid-container-for-car-search-info">
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>@daysForRent days</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Date</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Time</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>Location</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Pick-up</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.firstDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.PickUpLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info"></div>
+    <div class="grid-item-for-car-search-info">
+        <p>Return</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortDateString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.lastDayRent.ToShortTimeString()</p>
+    </div>
+    <div class="grid-item-for-car-search-info">
+        <p>@Model.rentViewModel.Locations.SingleOrDefault(p => p.Id == Model.rentViewModel.ReturnLocationId).Name</p>
+    </div>
+    <div class="grid-item-for-car-search-info"></div>
+</div>
+<button onclick="goToPreviousPage()">choose another car</button>
+<div class="form-group">
+    <img src="@Model.CarDto.PictureLink" class="img-thumbnail-car" />
+</div>
+<div class="form-group">
+    <p>Car: @carName</p>
+</div>
+@using (Html.BeginForm("Save", "Rents", FormMethod.Post))
+{
+    <div class="form-group">
+        <p>Buyer: @Model.UserName</p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Name, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.TextBoxFor(a => a.Name, htmlAttributes: new { @class = "form-control form-control-sm" })
+        @Html.ValidationMessageFor(a => a.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Surname, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.TextBoxFor(a => a.Surname, htmlAttributes: new { @class = "form-control form-control-sm" })
+        @Html.ValidationMessageFor(a => a.Surname)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Personald, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.TextBoxFor(a => a.Personald, htmlAttributes: new { @class = "form-control form-control-sm" })
+        @Html.ValidationMessageFor(a => a.Personald)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.WithChildSeat, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.WithChildSeat)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.WithGPS, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.WithGPS)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.WithDriver, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.CheckBoxFor(a => a.WithDriver, htmlAttributes: new { @id = "withDriver", @onclick = "checkboxPayForDriver()" })
+    </div>
+    <div class="form-group">
+        <p>Number of days: <a id="numberOfDays">@Model.NumberOfDays</a></p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.InsuranceType, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+        @Html.DropDownListFor(a => a.InsuranceType, new SelectList(sourceInsuranceType, "Value", "Text"), "Select insurance type", htmlAttributes: new { @class = "form-control form-control-sm" })
+        @Html.ValidationMessageFor(a => a.InsuranceType)
+    </div>
+    <div class="form-group">
+        <p>Total price: <a id="totalPrice">@Model.TotalPrice</a></p>
+    </div>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(a => a.UserName)
+        @Html.HiddenFor(a => a.CarId)
+        @Html.HiddenFor(a => a.DateOfAgreement)
+        @Html.HiddenFor(a => a.NumberOfDays)
+        @Html.HiddenFor(a => a.TotalPrice)
+        @Html.HiddenFor(a => a.rentViewModel.firstDayRent)
+        @Html.HiddenFor(a => a.rentViewModel.lastDayRent)
+        @Html.HiddenFor(a => a.rentViewModel.PickUpLocationId)
+        @Html.HiddenFor(a => a.rentViewModel.ReturnLocationId)
+    </div>
+    <button type="submit" class="btn btn-primary">Pay</button>
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function goToPreviousPage() {
+            window.history.go(-1);
+        }
+        function checkboxPayForDriver() {
+            var checkBox = document.getElementById("withDriver");
+            var totalPrice = Number(document.getElementById("totalPrice").innerText);
+            var numberOfDays = Number(document.getElementById("numberOfDays").innerText);
+            var newPrice = 50 * numberOfDays + totalPrice;
+
+            var insuranceType = document.getElementsByTagName("select")[0].value;
+
+            if (insuranceType == 1) {
+                newPrice *= 1.05;
+                newPrice = newPrice - newPrice % 1;
+            }
+            if (insuranceType == 2) {
+                newPrice *= 1.10;
+                newPrice = newPrice - newPrice % 1;
+            }
+
+            if (checkBox.checked == true) {
+                document.getElementById("totalPrice").innerText = newPrice;
+            } else {
+                document.getElementById("totalPrice").innerText = totalPrice - (50 * numberOfDays);
+            }
+        }
+    </script>
+}
