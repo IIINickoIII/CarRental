@@ -1,0 +1,122 @@
+﻿@model IEnumerable<CarRental.WEB.ViewModels.ManufacturerViewModel>
+@{
+    ViewBag.Title = "Manufacturers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Manufacturers</h2>
+<p></p>
+@Html.ActionLink("New manufacturer", "New", "Manufacturers", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+<p></p>
+<table id="manufacturers" class="table table-hover">
+    <thead>
+        <tr scope="row">
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var manufacturer in Model)
+        {
+            string imageName = manufacturer.Id + ".png";
+            <tr scope="row">
+                <td><img src="~/Files/Logo/@imageName" alt="no image" class="img-thumbnail" /></td>
+                <td>@Html.ActionLink(manufacturer.Name, "Details", "Manufacturers", htmlAttributes: null, routeValues: new { manufacturerDtoId = manufacturer.Id })</td>
+                <td>@manufacturer.Country</td>
+                <td>@manufacturer.Description</td>
+                <td>@Html.ActionLink("Edit", "Edit", "Manufacturers", htmlAttributes: null, routeValues: new { manufacturerDtoId = manufacturer.Id })</td>
+                <td>@Html.ActionLink("Delete", "Delete", "Manufacturers", htmlAttributes: null, routeValues: new { manufacturerDtoId = manufacturer.Id })</td>
+            </tr>
+        }*@
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $('#manufacturers').DataTable({
+                ajax: {
+                    url: "api/manufacturers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        orderable: false,
+                        data: "id",
+                        render: function (data, type, manufacturerDto) {
+                            return "<img src='" + manufacturerDto.pictureLink + "' alt='no image' class='img-thumbnail'/>"
+                        }
+                    },
+                    {
+                        data: "name",
+                        render: function (data, type, manufacturerDto) {
+                            return "<a href='/manufacturers/Details?manufacturerDtoId=" + manufacturerDto.id + "'>" + manufacturerDto.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "country"
+                    },
+                    {
+                        orderable: false,
+                        data: "description"
+                    },
+                    {
+                        
+                        data: "id",
+                        orderable: false,
+                        render: function (data) {
+                            return "<a href='/manufacturers/Edit?manufacturerDtoId=" + data + "'>Edit</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        orderable: false,
+                        render: function (data) {
+                            return "<button class='btn btn-outline-danger js-delete' data-manufacturer-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#manufacturers").on("click", ".js-delete", function () {
+                var button = $(this);
+                var td = $(this).parent();
+                var tr = td.parent().get(0);
+                var a = tr.children[1];
+                var manufacturerName = a.innerText;
+
+                bootbox.confirm({
+                    message: "Do you want to delete " + manufacturerName + " manufacturer?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            label: 'Delete',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/manufacturers/" + button.attr("data-manufacturer-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(button.parents("tr")).remove().draw();
+                                },
+                                statusCode: {
+                                    500: function () {
+                                        bootbox.alert("You can't delete " + manufacturerName + " until you have cars produced by this manufacturer.");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A29A6460-3E87-4B31-98D2-52DBCC4B4FD6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarRental.DAL</RootNamespace>
+    <AssemblyName>CarRental.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contexts\ApplicationContext.cs" />
+    <Compile Include="Entities\Agreement.cs" />
+    <Compile Include="Entities\BodyType.cs" />
+    <Compile Include="Entities\Car.cs" />
+    <Compile Include="Entities\CarClass.cs" />
+    <Compile Include="Entities\CarDelivery.cs" />
+    <Compile Include="Entities\CarFeedback.cs" />
+    <Compile Include="Entities\FuelType.cs" />
+    <Compile Include="Entities\GearboxType.cs" />
+    <Compile Include="Entities\Identity\ApplicationRole.cs" />
+    <Compile Include="Entities\Identity\ApplicationUser.cs" />
+    <Compile Include="Entities\Identity\ClientProfile.cs" />
+    <Compile Include="Entities\Manufacturer.cs" />
+    <Compile Include="Entities\Place.cs" />
+    <Compile Include="Entities\TransmissionType.cs" />
+    <Compile Include="Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Identity\ClientManager.cs" />
+    <Compile Include="Interfaces\IClientManager.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\ISpecialRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\Special\IAgreementRepository.cs" />
+    <Compile Include="Interfaces\Special\ICarDeliveryRepository.cs" />
+    <Compile Include="Interfaces\Special\ICarFeedbackRepository.cs" />
+    <Compile Include="Interfaces\Special\ICarRepository.cs" />
+    <Compile Include="Interfaces\Special\IManufacturerRepository.cs" />
+    <Compile Include="Interfaces\Special\IPlaceRepository.cs" />
+    <Compile Include="Migrations\202003030642459_InitialCreate.cs" />
+    <Compile Include="Migrations\202003030642459_InitialCreate.Designer.cs">
+      <DependentUpon>202003030642459_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003030823354_AddCarAndCarsRelatedEntities.cs" />
+    <Compile Include="Migrations\202003030823354_AddCarAndCarsRelatedEntities.Designer.cs">
+      <DependentUpon>202003030823354_AddCarAndCarsRelatedEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031104053_SeedFuelTypes.cs" />
+    <Compile Include="Migrations\202003031104053_SeedFuelTypes.Designer.cs">
+      <DependentUpon>202003031104053_SeedFuelTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031129486_SeedGearboxTypes.cs" />
+    <Compile Include="Migrations\202003031129486_SeedGearboxTypes.Designer.cs">
+      <DependentUpon>202003031129486_SeedGearboxTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031133116_SeedManufacturers.cs" />
+    <Compile Include="Migrations\202003031133116_SeedManufacturers.Designer.cs">
+      <DependentUpon>202003031133116_SeedManufacturers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031135023_SeedTransmissionTypes.cs" />
+    <Compile Include="Migrations\202003031135023_SeedTransmissionTypes.Designer.cs">
+      <DependentUpon>202003031135023_SeedTransmissionTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031145299_SeedCarClasses.cs" />
+    <Compile Include="Migrations\202003031145299_SeedCarClasses.Designer.cs">
+      <DependentUpon>202003031145299_SeedCarClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031156404_SeedBodyTypes.cs" />
+    <Compile Include="Migrations\202003031156404_SeedBodyTypes.Designer.cs">
+      <DependentUpon>202003031156404_SeedBodyTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031506036_AddCarFeedbackEntity.cs" />
+    <Compile Include="Migrations\202003031506036_AddCarFeedbackEntity.Designer.cs">
+      <DependentUpon>202003031506036_AddCarFeedbackEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031521058_AddPlaceEntity.cs" />
+    <Compile Include="Migrations\202003031521058_AddPlaceEntity.Designer.cs">
+      <DependentUpon>202003031521058_AddPlaceEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031525213_AddCarDeliveryEntity.cs" />
+    <Compile Include="Migrations\202003031525213_AddCarDeliveryEntity.Designer.cs">
+      <DependentUpon>202003031525213_AddCarDeliveryEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031528107_AddCarReturnEntity.cs" />
+    <Compile Include="Migrations\202003031528107_AddCarReturnEntity.Designer.cs">
+      <DependentUpon>202003031528107_AddCarReturnEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003031547291_FixLogicalDatabaseError.cs" />
+    <Compile Include="Migrations\202003031547291_FixLogicalDatabaseError.Designer.cs">
+      <DependentUpon>202003031547291_FixLogicalDatabaseError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003050650239_FixTryToFixContextError.cs" />
+    <Compile Include="Migrations\202003050650239_FixTryToFixContextError.designer.cs">
+      <DependentUpon>202003050650239_FixTryToFixContextError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003062014544_SeedUsersAndRoles.cs" />
+    <Compile Include="Migrations\202003062014544_SeedUsersAndRoles.designer.cs">
+      <DependentUpon>202003062014544_SeedUsersAndRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003092353414_SeedOneAditionalBodyType.cs" />
+    <Compile Include="Migrations\202003092353414_SeedOneAditionalBodyType.designer.cs">
+      <DependentUpon>202003092353414_SeedOneAditionalBodyType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003101502545_RefreshContext.cs" />
+    <Compile Include="Migrations\202003101502545_RefreshContext.designer.cs">
+      <DependentUpon>202003101502545_RefreshContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003101911431_AddDescriptionToPlaceEntity.cs" />
+    <Compile Include="Migrations\202003101911431_AddDescriptionToPlaceEntity.designer.cs">
+      <DependentUpon>202003101911431_AddDescriptionToPlaceEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003101913201_AddPictureLinkToManufacturerEntity.cs" />
+    <Compile Include="Migrations\202003101913201_AddPictureLinkToManufacturerEntity.designer.cs">
+      <DependentUpon>202003101913201_AddPictureLinkToManufacturerEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003101914240_AddPictureLinkToCarEntity.cs" />
+    <Compile Include="Migrations\202003101914240_AddPictureLinkToCarEntity.designer.cs">
+      <DependentUpon>202003101914240_AddPictureLinkToCarEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003110730587_MakeManufacturerFieldOfCarNullable.cs" />
+    <Compile Include="Migrations\202003110730587_MakeManufacturerFieldOfCarNullable.designer.cs">
+      <DependentUpon>202003110730587_MakeManufacturerFieldOfCarNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003120834004_AddNameToPlaceEntity.cs" />
+    <Compile Include="Migrations\202003120834004_AddNameToPlaceEntity.designer.cs">
+      <DependentUpon>202003120834004_AddNameToPlaceEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003120853072_SeedPlaces.cs" />
+    <Compile Include="Migrations\202003120853072_SeedPlaces.designer.cs">
+      <DependentUpon>202003120853072_SeedPlaces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003131051183_ChangeAgreementEntity.cs" />
+    <Compile Include="Migrations\202003131051183_ChangeAgreementEntity.designer.cs">
+      <DependentUpon>202003131051183_ChangeAgreementEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003131053309_ChangeCarDeliveryEntity.cs" />
+    <Compile Include="Migrations\202003131053309_ChangeCarDeliveryEntity.designer.cs">
+      <DependentUpon>202003131053309_ChangeCarDeliveryEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003131437474_AddUserNameToAgreementEntity.cs" />
+    <Compile Include="Migrations\202003131437474_AddUserNameToAgreementEntity.designer.cs">
+      <DependentUpon>202003131437474_AddUserNameToAgreementEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003132016112_RemoveCascadeDeletingAgreementAndCarEntities.cs" />
+    <Compile Include="Migrations\202003132016112_RemoveCascadeDeletingAgreementAndCarEntities.designer.cs">
+      <DependentUpon>202003132016112_RemoveCascadeDeletingAgreementAndCarEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003132053309_SeedManufacturers1.cs" />
+    <Compile Include="Migrations\202003132053309_SeedManufacturers1.designer.cs">
+      <DependentUpon>202003132053309_SeedManufacturers1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003132054522_SeedCars.cs" />
+    <Compile Include="Migrations\202003132054522_SeedCars.designer.cs">
+      <DependentUpon>202003132054522_SeedCars.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003141300318_AddCarIdToCarDelivery.cs" />
+    <Compile Include="Migrations\202003141300318_AddCarIdToCarDelivery.designer.cs">
+      <DependentUpon>202003141300318_AddCarIdToCarDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003161250542_ChangeAgreementEntity1.cs" />
+    <Compile Include="Migrations\202003161250542_ChangeAgreementEntity1.designer.cs">
+      <DependentUpon>202003161250542_ChangeAgreementEntity1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003171318403_SeedAddBannedRole.cs" />
+    <Compile Include="Migrations\202003171318403_SeedAddBannedRole.designer.cs">
+      <DependentUpon>202003171318403_SeedAddBannedRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004091055388_AddInsuranceTypeToAgreement.cs" />
+    <Compile Include="Migrations\202004091055388_AddInsuranceTypeToAgreement.designer.cs">
+      <DependentUpon>202004091055388_AddInsuranceTypeToAgreement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EFUnitOfWork.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\SpecialRepository.cs" />
+    <Compile Include="Repositories\Special\AgreementRepository.cs" />
+    <Compile Include="Repositories\Special\CarDeliveryRepository.cs" />
+    <Compile Include="Repositories\Special\CarFeedbackRepository.cs" />
+    <Compile Include="Repositories\Special\CarRepository.cs" />
+    <Compile Include="Repositories\Special\ManufacturerRepository.cs" />
+    <Compile Include="Repositories\Special\PlaceRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202003030642459_InitialCreate.resx">
+      <DependentUpon>202003030642459_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003030823354_AddCarAndCarsRelatedEntities.resx">
+      <DependentUpon>202003030823354_AddCarAndCarsRelatedEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031104053_SeedFuelTypes.resx">
+      <DependentUpon>202003031104053_SeedFuelTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031129486_SeedGearboxTypes.resx">
+      <DependentUpon>202003031129486_SeedGearboxTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031133116_SeedManufacturers.resx">
+      <DependentUpon>202003031133116_SeedManufacturers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031135023_SeedTransmissionTypes.resx">
+      <DependentUpon>202003031135023_SeedTransmissionTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031145299_SeedCarClasses.resx">
+      <DependentUpon>202003031145299_SeedCarClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031156404_SeedBodyTypes.resx">
+      <DependentUpon>202003031156404_SeedBodyTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031506036_AddCarFeedbackEntity.resx">
+      <DependentUpon>202003031506036_AddCarFeedbackEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031521058_AddPlaceEntity.resx">
+      <DependentUpon>202003031521058_AddPlaceEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031525213_AddCarDeliveryEntity.resx">
+      <DependentUpon>202003031525213_AddCarDeliveryEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031528107_AddCarReturnEntity.resx">
+      <DependentUpon>202003031528107_AddCarReturnEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003031547291_FixLogicalDatabaseError.resx">
+      <DependentUpon>202003031547291_FixLogicalDatabaseError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003050650239_FixTryToFixContextError.resx">
+      <DependentUpon>202003050650239_FixTryToFixContextError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003062014544_SeedUsersAndRoles.resx">
+      <DependentUpon>202003062014544_SeedUsersAndRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003092353414_SeedOneAditionalBodyType.resx">
+      <DependentUpon>202003092353414_SeedOneAditionalBodyType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003101502545_RefreshContext.resx">
+      <DependentUpon>202003101502545_RefreshContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003101911431_AddDescriptionToPlaceEntity.resx">
+      <DependentUpon>202003101911431_AddDescriptionToPlaceEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003101913201_AddPictureLinkToManufacturerEntity.resx">
+      <DependentUpon>202003101913201_AddPictureLinkToManufacturerEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003101914240_AddPictureLinkToCarEntity.resx">
+      <DependentUpon>202003101914240_AddPictureLinkToCarEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003110730587_MakeManufacturerFieldOfCarNullable.resx">
+      <DependentUpon>202003110730587_MakeManufacturerFieldOfCarNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003120834004_AddNameToPlaceEntity.resx">
+      <DependentUpon>202003120834004_AddNameToPlaceEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003120853072_SeedPlaces.resx">
+      <DependentUpon>202003120853072_SeedPlaces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003131051183_ChangeAgreementEntity.resx">
+      <DependentUpon>202003131051183_ChangeAgreementEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003131053309_ChangeCarDeliveryEntity.resx">
+      <DependentUpon>202003131053309_ChangeCarDeliveryEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003131437474_AddUserNameToAgreementEntity.resx">
+      <DependentUpon>202003131437474_AddUserNameToAgreementEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003132016112_RemoveCascadeDeletingAgreementAndCarEntities.resx">
+      <DependentUpon>202003132016112_RemoveCascadeDeletingAgreementAndCarEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003132053309_SeedManufacturers1.resx">
+      <DependentUpon>202003132053309_SeedManufacturers1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003132054522_SeedCars.resx">
+      <DependentUpon>202003132054522_SeedCars.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003141300318_AddCarIdToCarDelivery.resx">
+      <DependentUpon>202003141300318_AddCarIdToCarDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003161250542_ChangeAgreementEntity1.resx">
+      <DependentUpon>202003161250542_ChangeAgreementEntity1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003171318403_SeedAddBannedRole.resx">
+      <DependentUpon>202003171318403_SeedAddBannedRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004091055388_AddInsuranceTypeToAgreement.resx">
+      <DependentUpon>202004091055388_AddInsuranceTypeToAgreement.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+</Project>

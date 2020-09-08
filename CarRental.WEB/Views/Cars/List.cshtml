@@ -1,0 +1,128 @@
+﻿    @model IEnumerable<CarRental.WEB.ViewModels.CarViewModel>
+@{
+    ViewBag.Title = "Cars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Cars</h2>
+<p></p>
+@Html.ActionLink("Add car", "New", "Cars", routeValues: null, htmlAttributes: new { @class = "btn btn-primary btn-sm" })
+<p></p>
+<table id="cars" class="table table-hover">
+    <thead>
+        <tr scope="row">
+            <th>Photo</th>
+            <th>Model</th>
+            <th>Plates</th>
+            <th>Year</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var car in Model)
+            {
+                <tr scope="row">
+                    <td></td>
+                    <td>@Html.ActionLink($"{car.ManufacturerDto.Name} {car.Name}", "Details", "Cars", htmlAttributes: null, routeValues: new { carDtoId = car.Id })</td>
+                    <td>@car.LicensePlate</td>
+                    <td>@car.ProductionYear</td>
+                    <td>@car.PricePerDay</td>
+                    <td>@Html.ActionLink("Edit", "Edit", "Cars", htmlAttributes: null, routeValues: new { carDtoId = car.Id })</td>
+                    <td>@Html.ActionLink("Delete", "Delete", "Cars", htmlAttributes: null, routeValues: new { carDtoId = car.Id })</td>
+                </tr>
+            }*@
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $('#cars').DataTable({
+                ajax: {
+                    url: "api/cars",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        orderable: false,
+                        data: "id",
+                        render: function (data, type, carDto) {
+                            return "<img src='" + carDto.pictureLink + "' alt='No image.' class='img-thumbnail-car'/>"
+                        }
+                    },
+                    {
+                        data: "name",
+                        render: function (data, type, carDto) {
+                            return "<a href='/cars/Details?carDtoId=" + carDto.id + "'>" + carDto.manufacturerDto.name + " " + carDto.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "licensePlate"
+                    },
+                    {
+                        data: "productionYear"
+                    },
+                    {
+                        data: "pricePerDay",
+                        render: function (data) {
+                            return "" + data + " $";
+                        }
+                    },
+                    {
+                        data: "id",
+                        orderable: false,
+                        render: function (data) {
+                            return "<a href='/cars/Edit?carDtoId=" + data + "'>Edit</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        orderable: false,
+                        render: function (data) {
+                            return "<button class='btn btn-outline-danger js-delete' data-car-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#cars").on("click", ".js-delete", function () {
+                var button = $(this);
+                var td = $(this).parent();
+                var tr = td.parent().get(0);
+                var a = tr.children[1];
+                var carName = a.innerText;
+
+                bootbox.confirm({
+                    message: "Do you want to delete " + carName + "?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            label: 'Delete',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/cars/" + button.attr("data-car-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    console.log("Hello");
+                                    table.row(button.parents("tr")).remove().draw();
+                                },
+                                statusCode: {
+                                    500: function () {
+                                        bootbox.alert("You can't delete " + carName + " because you have rents of this car.");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

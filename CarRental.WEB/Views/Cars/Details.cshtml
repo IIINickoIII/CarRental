@@ -1,0 +1,87 @@
+﻿@model CarRental.WEB.ViewModels.CarFormViewModel
+@{
+    string carName = $"{Model.CarViewModel.ManufacturerDto.Name} {Model.CarViewModel.Name}";
+    ViewBag.Title = carName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@carName</h2>
+<div class="grid-container-add-car">
+    <div class="grid-item-add-car item1-add-car">
+        <div class="form-row">
+            <span id="output">
+                @if (!Model.CarViewModel.IsNewCreated)
+                {
+                    <img src="@Model.CarViewModel.PictureLink" class="img-add-car" alt="New Car" />
+                }
+            </span>
+        </div>
+    </div>
+    <div class="grid-item-add-car item2-add-car">
+        <div class="grid-container-under-add-car">
+            <div class="grid-item-under-add-car">
+                <div class="form-group">
+                    @Html.LabelFor(c => c.CarViewModel.ManufacturerId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+                    @Html.DropDownListFor(c => c.CarViewModel.ManufacturerId, new SelectList(Model.ManufacturerDtos, "Id", "Name"), "Select manufacturer", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+                </div>
+            </div>
+            <div class="grid-item-under-add-car">
+                <div class="form-group">
+                    @Html.LabelFor(c => c.CarViewModel.Name, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+                    @Html.TextBoxFor(c => c.CarViewModel.Name, htmlAttributes: new { @class = "form-control form-control-sm", @placeholder = "Land Cruiser 200", @disabled=""})
+                </div>
+            </div>
+            <div class="grid-item-under-add-car">
+                <div class="form-group">
+                    @Html.LabelFor(c => c.CarViewModel.ProductionYear, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+                    @Html.TextBoxFor(c => c.CarViewModel.ProductionYear, htmlAttributes: new { @class = "form-control form-control-sm", @type = "number", @min = 2000, @max = DateTime.Now.Year, @step = 1, @placeholder = "2000", @disabled=""})
+                </div>
+            </div>
+        </div>
+        <div class="form-group description-under-add-car">
+            @Html.LabelFor(c => c.CarViewModel.Description, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.TextAreaFor(c => c.CarViewModel.Description, htmlAttributes: new { @class = "form-control form-control-sm description-under-add-car", @rows = 5, @disabled=""})
+        </div>
+    </div>
+    <div class="grid-item-add-car item3-add-car">
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.LicensePlate, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.TextBoxFor(c => c.CarViewModel.LicensePlate, htmlAttributes: new { @class = "form-control form-control-sm", @placeholder = "AA0000BB", @onkeyup = "this.value = this.value.toUpperCase();", @disabled=""})
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.NumberOfSeats, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.TextBoxFor(c => c.CarViewModel.NumberOfSeats, htmlAttributes: new { @class = "form-control form-control-sm", @type = "number", @min = 1, @max = 20, @step = 1, @disabled=""})
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.PricePerDay, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.TextBoxFor(c => c.CarViewModel.PricePerDay, htmlAttributes: new { @class = "form-control form-control-sm", @type = "number", @min = 10, @max = 100000, @step = 1, @disabled=""})
+                
+        </div>
+        <div class="form-group">
+            <label class="col-form-label col-form-label-sm">
+                @Html.CheckBoxFor(c => c.CarViewModel.WithAirConditioning, htmlAttributes: new { @disabled="" }) With air conditioning.
+            </label>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.FuelTypeId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.DropDownListFor(c => c.CarViewModel.FuelTypeId, new SelectList(Model.FuelTypeDtos, "Id", "Name"), "Select fuel type", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.GearboxTypeId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.DropDownListFor(c => c.CarViewModel.GearboxTypeId, new SelectList(Model.GearboxTypeDtos, "Id", "Name"), "Select gearbox type", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.TransmissionTypeId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.DropDownListFor(c => c.CarViewModel.TransmissionTypeId, new SelectList(Model.TransmissionTypeDtos, "Id", "Name"), "Select transmission type", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.CarClassId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.DropDownListFor(c => c.CarViewModel.CarClassId, new SelectList(Model.CarClassDtos, "Id", "Name"), "Select car class", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.CarViewModel.BodyTypeId, htmlAttributes: new { @class = "col-form-label col-form-label-sm" })
+            @Html.DropDownListFor(c => c.CarViewModel.BodyTypeId, new SelectList(Model.BodyTypeDtos, "Id", "Name"), "Select body type", htmlAttributes: new { @class = "form-control form-control-sm", @disabled=""})
+        </div>
+    </div>
+</div>

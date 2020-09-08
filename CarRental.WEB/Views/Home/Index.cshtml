@@ -1,0 +1,117 @@
+﻿@model CarRental.WEB.ViewModels.RentViewModel
+@using CarRental.WEB.Models
+@{
+    ViewBag.Title = "Home Page";
+    var today = DateTime.Now;
+    var tomorrow = today.AddDays(1);
+    string minDate = $"{tomorrow.Year}-{tomorrow.Month}-{tomorrow.Day}";
+}
+<link rel="stylesheet" href="~/Content/DateTimePicker/bootstrap.min.css" />
+<link rel="stylesheet" href="~/Content/DateTimePicker/bootstrap-datetimepicker.min.css" />
+<div class="grid-container-index">
+    <div class="grid-item-index grid-item-search-your-car">
+        @using (Html.BeginForm("CarsAvailableForRent", "Cars", FormMethod.Post))
+        {
+            <div class="container">
+                <div class='col-md-5'>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PickUpLocation, htmlAttributes: new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.PickUpLocationId,
+                           new SelectList(Model.Locations, "Id", "Name"), "Select pick-up location",
+                           htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PickUpLocationId)
+                    </div>
+                </div>
+                <div class='col-md-5'>
+                    @Html.LabelFor(m => m.firstDayRent, htmlAttributes: new { @class = "col-form-label" })
+                    <div class="form-group date-form-group">
+                        <div class='input-group date my-datepicker-style-input-group' id='datetimepicker1'>
+                            @Html.TextBoxFor(m => m.firstDayRent, htmlAttributes: new { @type = "text", @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.firstDayRent)
+                </div>
+            </div>
+            <div class="container">
+                <div class='col-md-5'>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ReturnLocation, htmlAttributes: new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.ReturnLocationId,
+                           new SelectList(Model.Locations, "Id", "Name"), "Select pick-up location",
+                           htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ReturnLocationId)
+                    </div>
+                </div>
+                <div class='col-md-5'>
+                    @Html.LabelFor(m => m.lastDayRent, htmlAttributes: new { @class = "col-form-label" })
+                    <div class="form-group date-form-group">
+                        <div class='input-group date my-datepicker-style-input-group' id='datetimepicker2'>
+                            @Html.TextBoxFor(m => m.lastDayRent, htmlAttributes: new { @type = "text", @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.lastDayRent)
+                </div>
+            </div>
+            <div class="container">
+                <div class='col-md-5'>
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class='col-md-5'>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary date-form-goup-button">Search your car</button>
+                        @Html.AntiForgeryToken()
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="grid-item-pic1 grid-item-index">
+        <img src="~/Files/Content/autopark.png" alt="autopark" class="grid-item-index-image" />
+    </div>
+    <div class="grid-item-index">
+        <img src="~/Files/Content/car_brands.png" alt="manufacturers" class="grid-item-index-image" />
+    </div>
+    <div class="grid-item-index">
+        <img src="~/Files/Content/about-us.png" alt="about" class="grid-item-index-image" />
+    </div>
+    <div class="grid-item-index">
+        @Html.ActionLink("Autopark", "Index", "Cars", routeValues: null, htmlAttributes: new { @class = "image-index-link" })
+    </div>
+    <div class="grid-item-index">
+        @Html.ActionLink("Manufacturers", "Index", "Manufacturers", routeValues: null, htmlAttributes: new { @class = "image-index-link" })
+    </div>
+    <div class="grid-item-index">
+        @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "image-index-link" })
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/DateTimePicker/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/DateTimePicker/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/DateTimePicker/bootstrap.min.js"></script>
+    <script src="~/Scripts/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({ minDate: "@minDate" });
+            $('#datetimepicker2').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                minDate: "@minDate"
+            });
+            $("#datetimepicker1").on("dp.change", function (e) {
+                $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker2").on("dp.change", function (e) {
+                $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+            });
+
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

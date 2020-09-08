@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CarRental.WEB.ViewModels.CarViewModel>
+@{
+    ViewBag.Title = "Cars";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Cars</h2>
+@Html.ActionLink("main","Index","Home")
+<table id="cars" class="table table-hover">
+    <thead>
+        <tr scope="row">
+            <th>Photo</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach(var car in Model)
+        {
+            <tr scope="row">
+                <td><img src="@car.PictureLink" alt="no image" class="img-thumbnail-car" /></td>
+                <td>@Html.ActionLink(car.ManufacturerDto.Name + car.Name, "Details", "Cars", htmlAttributes: null, routeValues: new { carDtoId = car.Id })</td>
+                <td>@car.ProductionYear</td>
+                <td>@car.PricePerDay $/day</td>
+                <td>@car.Description</td>
+            </tr>
+        }*@
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $('#cars').DataTable({
+                ajax: {
+                    url: "api/cars",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        orderable: false,
+                        data: "id",
+                        render: function (data, type, carDto) {
+                            return "<img src='" + carDto.pictureLink + "' alt='No image.' class='img-thumbnail-car'/>"
+                        }
+                    },
+                    {
+                        data: "name",
+                        render: function (data, type, carDto) {
+                            return "<a href='/cars/Details?carDtoId=" + carDto.id + "'>" + carDto.manufacturerDto.name + " " + carDto.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "productionYear"
+                    },
+                    {
+                        data: "pricePerDay",
+                        render: function (data) {
+                            return "" + data + " $";
+                        }
+                    },
+                    {
+                        data: "description"
+                    }
+                ]
+            });
+        });
+    </script>
+}
