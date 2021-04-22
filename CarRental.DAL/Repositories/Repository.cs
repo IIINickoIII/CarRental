@@ -14,9 +14,9 @@ namespace CarRental.DAL.Repositories
             Context = context;
         }
 
-        public TEntity Get(int id)
+        public async Task<TEntity> Get(int id)
         {
-            return Context.Set<TEntity>().Find(id);
+            return await Context.Set<TEntity>().FindAsync(id);
         }
 
         public IEnumerable<TEntity> GetAll()
